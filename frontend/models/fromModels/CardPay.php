@@ -5,6 +5,7 @@ namespace frontend\models\fromModels;
 use yii\base\Model;
 use frontend\models\dataModels\CardPayList;
 use frontend\models\dataModels\Card;
+use frontend\models\dataModels\CardPayLog;
 
 class CardPay extends Model {
 	public $card_id;
@@ -83,16 +84,18 @@ class CardPay extends Model {
 		}
 		
 		$CardInfEnd = Card::findOne(['id'=>$this->card_id]);
-		$CardAddListModle = new CardPayList();
-		$CardAddListModle->pay_money = $this->money;
-		$CardAddListModle->user_id= $userId;
-		$CardAddListModle->card_id= $this->card_id;
+		$cardPayLog = new CardPayLog();
+// 		$CardAddListModle = new CardPayList();
+		$cardPayLog->money = $this->money;
+		$cardPayLog->user_id= $userId;
+		$cardPayLog->card_id= $this->card_id;
 		
-		$CardAddListModle->create_time= time();
-		$CardAddListModle->after_mone = $CardInfEnd->card_money;
-		if (!$CardAddListModle->save()){
+		$cardPayLog->create_time= time();
+		$cardPayLog->after_mone = $CardInfEnd->card_money;
+		$cardPayLog->type = 2;
+		if (!$cardPayLog->save()){
 			\Yii::error('添加记录失败');
-			$this->addErrors($CardAddListModle->errors);
+			$this->addErrors($cardPayLog->errors);
 			$Transaction->rollBack();
 			return null;
 		}

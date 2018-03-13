@@ -14,6 +14,10 @@ use frontend\models\fromModels\CardMoneyAdd;
 use frontend\models\fromModels\CardPay;
 use yii\bootstrap\ActiveForm;
 use frontend\models\fromModels\SearchCard;
+use frontend\models\dataModels\CardPayList;
+use frontend\models\dataModels\CardAddList;
+use frontend\models\dataModels\CardPayLog;
+use frontend\models\fromModels\CardFixUser;
 
 class CardController  extends \frontend\common\FrontendController{
 	
@@ -113,9 +117,58 @@ class CardController  extends \frontend\common\FrontendController{
 		]);
 	}
 	
-	// 卡详情
+	// 卡详情(消费记录)
 	public function actionCardInf(){
+		$cardId = \Yii::$app->request->get('card_id',0);
+		/**
+		 * 
+		 * @var Card $CardInf
+		 */
+		$CardInf = Card::find()->where(['id'=>$cardId])->andWhere(['user_id'=>\Yii::$app->user->getId()])->one();
+		if (empty($CardInf)){
+			return $this->redirect('/card/card-list');
+		}
 		
+		$this->layout = 'card';
+		$model = CardPayLog::find()->where(['user_id'=>\Yii::$app->user->getId()])->andWhere(['card_id'=>$cardId])->orderBy('id desc');;
+		$dataProvider = new ActiveDataProvider([
+				'query'=>$model,
+				// 				'defaultPageSize'=>10,
+				'totalCount'=>$model->count()
+		]);
+		
+		$fixmodel =  new CardFixUser();
+		$fixmodel->card_id = $CardInf->id;
+		$fixmodel->card_no = $CardInf->card_no;
+		$fixmodel->user_name = $CardInf->card_user_name;
+		$fixmodel->user_tel = $CardInf->card_user_tel;
+		return $this->render('cardInfo', [
+				'CardInf'=>$CardInf,
+				'dataProvider'=>$dataProvider,
+				'fixmodel'=>$fixmodel
+		]);
+	}
+	
+	// 充值记录
+	public function actionCardAddList(){
+		$cardId = \Yii::$app->request->get('card_id',0);
+		$CardInf = Card::find()->where(['id'=>$cardId])->andWhere(['user_id'=>\Yii::$app->user->getId()])->one();
+		if (empty($CardInf)){
+			return $this->redirect('/card/card-list');
+		}
+		
+		$this->layout = 'card';
+		$model = CardAddList::find()->where(['user_id'=>\Yii::$app->user->getId()])->andWhere(['card_id'=>$cardId])->orderBy('id desc');;
+		$dataProvider = new ActiveDataProvider([
+				'query'=>$model,
+				// 				'defaultPageSize'=>10,
+				'totalCount'=>$model->count()
+		]);
+		
+		return $this->render('cardInfo', [
+				'CardInf'=>$CardInf,
+				'dataProvider'=>$dataProvider,
+		]);
 	}
 	
 	/**
@@ -140,7 +193,7 @@ class CardController  extends \frontend\common\FrontendController{
 		return ActiveForm::validate($model);
 	}
 	
-	// 添加
+	// 添加充值记录
 	public function actionCardAdd(){
 		$model=new CardMoneyAdd();
 		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
@@ -160,7 +213,7 @@ class CardController  extends \frontend\common\FrontendController{
 		return ActiveForm::validate($model);
 	}
 	
-	// 添加
+	// 添加交易记录
 	public function actionPayAdd(){
 		$model= new CardPay();
 		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
@@ -170,6 +223,26 @@ class CardController  extends \frontend\common\FrontendController{
 		return ['state'=>3,'message'=>'参数错误','data'=>$model->errors];
 	}
 	
+	
+	// 修改用户信息 验证接口
+	public function actionValidationFixUser(){
+		$model= new CardFixUser();
+		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
+		if ($model->load(Yii::$app->request->post())  && $model->validate()) {
+			
+		}
+		return ActiveForm::validate($model);
+	}
+	
+	// 修改用户信息 验证接口
+	public function actionFixUser(){
+		$model= new CardFixUser();
+		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
+		if ($model->load(Yii::$app->request->post())  && $model->fixUser()) {
+			return $this->redirect(\Yii::$app->request->referrer);
+		}
+		return ActiveForm::validate($model);
+	}
 	
 }
 

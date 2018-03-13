@@ -10,6 +10,7 @@ use yii\grid\GridView;
 use yii\base\Model;
 use yii\bootstrap\Modal;
 use PharIo\Manifest\Url;
+use yii\web\UrlManager;
 $css = '		.from {
 			border: 1px solid #d8dee2;
 			margin-top:100px;
@@ -63,7 +64,7 @@ echo GridView::widget([
 									]);
 								},
 								'info' => function($url, $model, $key){
-									return Html::a('详情', "#" ,[
+								return Html::a('详情', \yii\helpers\Url::toRoute(['card/card-inf','card_id'=>$model->id]) ,[
 											'id' => '',
 											'card_no'=>$model->card_no,
 											'card_id'=>$model->id,
@@ -124,7 +125,6 @@ $(function(){
 }); 
 JS;
 // $this->registerJs($js);
-
 
 echo $form->field($addmodel, 'card_id')->textInput(['readonly'=>"true"]);
 echo $form->field($addmodel, 'card_no')->textInput(['readonly'=>"true"]);            	

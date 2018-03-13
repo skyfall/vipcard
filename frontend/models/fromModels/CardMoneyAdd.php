@@ -6,6 +6,7 @@ use yii\base\Model;
 use frontend\models\dataModels\Card;
 use SebastianBergmann\CodeCoverage\Report\Html\Facade;
 use frontend\models\dataModels\CardAddList;
+use frontend\models\dataModels\CardPayLog;
 
 class CardMoneyAdd extends Model {
 	
@@ -88,16 +89,19 @@ class CardMoneyAdd extends Model {
 		}
 		
 		$CardInfEnd = Card::findOne(['id'=>$this->card_id]);
-		$CardAddListModle = new CardAddList();
-		$CardAddListModle->add_money = $this->money;
-		$CardAddListModle->user_id= $userId;
-		$CardAddListModle->card_id= $this->card_id;
+		
+		$cardPayLog = new CardPayLog();
+// 		$CardAddListModle = new CardAddList();
+		$cardPayLog->money = $this->money;
+		$cardPayLog->user_id= $userId;
+		$cardPayLog->card_id= $this->card_id;
 
-		$CardAddListModle->create_time= time();
-		$CardAddListModle->after_mone = $CardInfEnd->card_money;
-		if (!$CardAddListModle->save()){
+		$cardPayLog->create_time= time();
+		$cardPayLog->after_mone = $CardInfEnd->card_money;
+		$cardPayLog->type = 1;
+		if (!$cardPayLog->save()){
 			\Yii::error('添加记录失败');
-			$this->addErrors($CardAddListModle->errors);
+			$this->addErrors($cardPayLog->errors);
 			$Transaction->rollBack();
 			return null;
 		}
