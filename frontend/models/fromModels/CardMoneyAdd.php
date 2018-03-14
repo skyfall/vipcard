@@ -50,7 +50,10 @@ class CardMoneyAdd extends Model {
 		}
 		$this->money = intval($this->money*100);
 		if (empty($this->money)){
-			$this->addError('money','金额必须为2位小数');
+			$this->addError('money','充值金额必须是数字');
+		}
+		if ($this->money <= 0 ){
+			$this->addError('money','充值金额必须大于0');
 		}
 	}
 	

@@ -45,6 +45,8 @@ $HTML= <<< HTML
 			<div class="col-md-4">
 				
 				<button class="btn btn-default" data-toggle="modal" data-target="#myModal">修改</button>
+				<button class="btn btn-default" data-toggle="modal" data-target="#addMoneyModle">充值</button>
+				<button class="btn btn-default" data-toggle="modal" data-target="#myModalpay">消费</button>
 			</div>
 		</div>
 	</div>
@@ -88,6 +90,57 @@ echo $form->field($fixmodel, 'user_tel')->textInput();
 echo Html::submitButton('修改', ['class' => 'btn btn-primary', 'name' => 'login-button']) ;
 ActiveForm::end();
 Modal::end();
+
+
+//  充值表单
+$Modal1 = Modal::begin([
+		'id' => 'addMoneyModle',
+		'header' => '</button><h4 class="modal-title" id="myModalMoney">充值</h4>',
+		// 		'footer' => '<button  type="submit" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" id="addFromBtn" >充值</button>',
+]);
+$form = ActiveForm::begin(['id' => 'add-money-form','options'=>['class'=>'modal-body','style'=>'margin-left: 15px'],'enableAjaxValidation' => true,'validationUrl'=>\yii\helpers\Url::toRoute(['card/validation-card-add']), 'action'=>\yii\helpers\Url::toRoute(['card/card-add'])]);
+
+$js = <<<JS
+    $(document).on('click', '.create-btn', function () {
+            console.log(this.attributes.card_no.value)
+        	console.log(this.attributes.card_id.value)
+			$("#cardmoneyadd-card_id").val(this.attributes.card_id.value)
+			$("#cardmoneyadd-card_no").val(this.attributes.card_no.value)
+    });
+JS;
+$this->registerJs($js);
+
+echo $form->field($addmodel, 'card_id')->textInput(['readonly'=>"true",'value'=>$CardInf->id]);
+echo $form->field($addmodel, 'card_no')->textInput(['readonly'=>"true",'value'=>$CardInf->card_no]);
+echo $form->field($addmodel, 'money')->textInput(['autofocus' => true]);
+echo Html::submitButton('充值', ['class' => 'btn btn-primary', 'name' => 'login-button']) ;
+$form::end();
+$Modal1::end();
+
+// 消费表单
+$Modal2 = Modal::begin([
+		'id' => 'myModalpay',
+		'header' => '</button><h4 class="modal-title" id="myModalLabel">消费</h4>',
+		// 		'footer' => '<button type="submit" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary"  id="payFromBtn">消费</button>',
+]);
+$formPay = ActiveForm::begin(['id' => 'pay-form','options'=>['class'=>'modal-body','style'=>'margin-left: 15px'],'enableAjaxValidation' => true, 'validationUrl' => \yii\helpers\Url::toRoute(['card/validation-pay-add']),'action' => \yii\helpers\Url::toRoute(['card/pay-add'])]);
+$js = <<<JS
+    $(document).on('click', '.pay-btn', function () {
+			console.log(this.attributes.card_id.value)
+			$("#cardpay-card_id").val(this.attributes.card_id.value)
+			$("#cardpay-card_no").val(this.attributes.card_no.value)
+    });
+JS;
+$this->registerJs($js);
+
+echo $formPay->field($paymodel, 'card_id')->textInput(['readonly'=>"true",'value'=>$CardInf->id]);
+echo $formPay->field($paymodel, 'card_no')->textInput(['readonly'=>"true",'value'=>$CardInf->card_no]);
+echo $formPay->field($paymodel, 'money')->textInput(['autofocus' => true]);
+echo Html::submitButton('消费', ['class' => 'btn btn-primary', 'name' => 'login-button']) ;
+$formPay::end();
+$Modal2::end();
+
+
 
 ?>
 

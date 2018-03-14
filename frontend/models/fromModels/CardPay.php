@@ -45,10 +45,19 @@ class CardPay extends Model {
 			$this->addError('money','请输入消费金额');
 			return false;
 		}
-		$this->money = intval($this->money*100*-1);
+
+		$this->money = intval($this->money*100);
+		$this->money = $this->money*-1;
+
+		$nowMoney = $this->money;
+	
+		if ($nowMoney >= 0 ){
+			$this->addError('money','消费金额必须大于0');
+		}
 		if (empty($this->money)){
 			$this->addError('money','消费金额必须为2位小数');
 		}
+
 	}
 	
 	/**

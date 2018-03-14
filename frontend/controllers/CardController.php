@@ -136,6 +136,10 @@ class CardController  extends \frontend\common\FrontendController{
 				'totalCount'=>$model->count()
 		]);
 		
+		
+		$cardMoneyAdd = new CardMoneyAdd();
+		$cardPayModle = new CardPay();
+		
 		$fixmodel =  new CardFixUser();
 		$fixmodel->card_id = $CardInf->id;
 		$fixmodel->card_no = $CardInf->card_no;
@@ -144,7 +148,9 @@ class CardController  extends \frontend\common\FrontendController{
 		return $this->render('cardInfo', [
 				'CardInf'=>$CardInf,
 				'dataProvider'=>$dataProvider,
-				'fixmodel'=>$fixmodel
+				'fixmodel'=>$fixmodel,
+				'addmodel'=>$cardMoneyAdd,
+				'paymodel'=>$cardPayModle,
 		]);
 	}
 	
@@ -197,7 +203,7 @@ class CardController  extends \frontend\common\FrontendController{
 		$model=new CardMoneyAdd();
 		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
 		if ($model->load(Yii::$app->request->post()) && $model->addCardMoney()) {
-			return $this->redirect('/card/card-list');
+			return $this->redirect(\Yii::$app->request->referrer);
 		}
 		return ActiveForm::validate($model);
 	}
@@ -206,9 +212,7 @@ class CardController  extends \frontend\common\FrontendController{
 	public function actionValidationPayAdd(){
 		$model= new CardPay();
 		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
-		if ($model->load(Yii::$app->request->post())  && $model->validate()) {
-			
-		}
+		$model->load(Yii::$app->request->post());
 		return ActiveForm::validate($model);
 	}
 	
@@ -217,9 +221,9 @@ class CardController  extends \frontend\common\FrontendController{
 		$model= new CardPay();
 		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
 		if ($model->load(Yii::$app->request->post()) && $model->addPayMoney()) {
-			return $this->redirect('/card/card-list');
+			return $this->redirect(\Yii::$app->request->referrer);
 		}
-		return ['state'=>3,'message'=>'参数错误','data'=>$model->errors];
+		return ActiveForm::validate($model);
 	}
 	
 	
@@ -227,9 +231,7 @@ class CardController  extends \frontend\common\FrontendController{
 	public function actionValidationFixUser(){
 		$model= new CardFixUser();
 		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
-		if ($model->load(Yii::$app->request->post())  && $model->validate()) {
-			
-		}
+		$model->load(Yii::$app->request->post());
 		return ActiveForm::validate($model);
 	}
 	
@@ -237,9 +239,7 @@ class CardController  extends \frontend\common\FrontendController{
 	public function actionFixUser(){
 		$model= new CardFixUser();
 		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
-		if ($model->load(Yii::$app->request->post())  && $model->fixUser()) {
-			return $this->redirect(\Yii::$app->request->referrer);
-		}
+		$model->load(Yii::$app->request->post());
 		return ActiveForm::validate($model);
 	}
 	
