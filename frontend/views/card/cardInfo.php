@@ -18,7 +18,7 @@ $this->registerCss($css);
 
 
 $HTML= <<< HTML
-	<div class="col-md-10 head" >
+	<div class="col-md-12 head" >
 		<div class="row">
 			<div class="col-md-4">
 				<label>卡号:</label>
