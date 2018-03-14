@@ -71,6 +71,9 @@ class CardLogin  extends Model{
 	{
 		if ($this->_user === null) {
 			$userInf = User::findByUsername($this->username);
+			if (empty($userInf)){
+				return null;
+			}
 			$this->_user = $userInf->user_pass == $this->password ? $userInf : new User();
 		}
 		
