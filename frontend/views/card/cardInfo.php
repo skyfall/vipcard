@@ -43,19 +43,25 @@ $HTML= <<< HTML
 				<label>%s</label>
 			</div>
 			<div class="col-md-4">
-				
 				<button class="btn btn-default" data-toggle="modal" data-target="#myModal">修改</button>
 				<button class="btn btn-default" data-toggle="modal" data-target="#addMoneyModle">充值</button>
 				<button class="btn btn-default" data-toggle="modal" data-target="#myModalpay">消费</button>
+				
 			</div>
+		</div>
+		<div class="row" style="margin-top:  10px;">
+			%s
+		</div>
+		<div class="row">
+			%s
 		</div>
 	</div>
 HTML;
-$card_money = sprintf("%.2f",($CardInf->card_money/100));
-echo sprintf($HTML,$CardInf->card_no,$CardInf->card_user_name,$CardInf->card_user_tel,date('Y-m-d H:i:s',$CardInf->create_time),$card_money
-		);
 
-echo GridView::widget([
+$card_money = sprintf("%.2f",($CardInf->card_money/100));
+
+$donwBtn = "<a class='btn btn-default col-md-offset-8 col-md-2' target='view_window' href='".Url::toRoute(['card-excel/down-card-log','card_id'=>$CardInf->id,'card_no'=>$CardInf->card_no])."'>导出数据</a>";
+$GridViewHtml = GridView::widget([
 		'dataProvider'=>$dataProvider,
 		'columns'=>[
 				['label'=>'系统编号','value'=>'id'],
@@ -73,6 +79,9 @@ echo GridView::widget([
 				}],
 		]
 	]);
+echo sprintf($HTML,$CardInf->card_no,$CardInf->card_user_name,$CardInf->card_user_tel,date('Y-m-d H:i:s',$CardInf->create_time),$card_money,
+		$donwBtn,$GridViewHtml
+		);
 
 Modal::begin([
 		'id' => 'myModal',

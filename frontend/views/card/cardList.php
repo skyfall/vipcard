@@ -34,6 +34,8 @@ echo "<div class='col-md-12'>";
 echo '</div>';
 ActiveForm::end();
 
+echo "<div class='col-md-12' > <a class='col-md-2 col-md-offset-8 btn btn-default' target='view_window' href='".\yii\helpers\Url::toRoute('card-excel/down-card-list')."'>导出数据</a> </div>";
+
 echo GridView::widget([
 		'dataProvider'=>$dataProvider,
 		'columns'=>[
