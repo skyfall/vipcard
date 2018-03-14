@@ -24,8 +24,14 @@ $this->registerCss($css);
 
 // 搜索表单
 $form = ActiveForm::begin(['id' => 'add-form','options'=>['class'=>'modal-body','style'=>'margin-left: 15px'],'method'=>"get",'action'=>\yii\helpers\Url::toRoute(['card/card-list'])]);
-echo $form->field($sreachmodel, 'card_no')->textInput(['autofocus' => true]);
-echo Html::submitButton('搜索', ['class' => 'btn btn-primary', 'name' => 'login-button']);
+echo "<div class='col-md-12'>";
+	echo "<div class='col-md-10'>";
+		echo $form->field($sreachmodel, 'card_no')->textInput(['autofocus' => true,'class'=>'form-control']);
+	echo '</div>';
+	echo "<div class='col-md-2'>";
+		echo Html::submitButton('搜索', ['class' => 'btn btn-primary', 'name' => 'login-button','style'=>'margin-top: 25px']);
+	echo '</div>';
+echo '</div>';
 ActiveForm::end();
 
 echo GridView::widget([
