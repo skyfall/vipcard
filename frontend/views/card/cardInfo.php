@@ -74,7 +74,7 @@ echo GridView::widget([
 
 Modal::begin([
 		'id' => 'myModal',
-		'header' => '</button><h4 class="modal-title" id="myModalLabel"></h4>',
+		'header' => '</button><h4 class="modal-title" id="myModalLabel">修改</h4>',
 		// 		'footer' => '<button  type="submit" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" id="addFromBtn" >充值</button>',
 ]);
 
@@ -85,7 +85,7 @@ echo $form->field($fixmodel, 'card_no')->textInput(['readonly'=>"true"]);
 echo $form->field($fixmodel, 'user_name')->textInput();
 echo $form->field($fixmodel, 'user_tel')->textInput();
 
-echo Html::submitButton('充值', ['class' => 'btn btn-primary', 'name' => 'login-button']) ;
+echo Html::submitButton('修改', ['class' => 'btn btn-primary', 'name' => 'login-button']) ;
 ActiveForm::end();
 Modal::end();
 
