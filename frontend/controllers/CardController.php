@@ -65,7 +65,6 @@ class CardController  extends \frontend\common\FrontendController{
 		} else {
 			$this->layout = false;
 			$model->password = '';
-			
 			return $this->render('login', [
 					'model' => $model,
 			]);

@@ -31,9 +31,9 @@ use yii\bootstrap\ActiveForm;
         	<div style="margin-top: 14px;margin-bottom: 14px">
             	<?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-                	<?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                	<?= $form->field($model, 'username')->textInput($model->getErrors('password') ? [] : ['autofocus' => true]) ?>
 
-                	<?= $form->field($model, 'password')->passwordInput() ?>
+                	<?= $form->field($model, 'password')->passwordInput($model->getErrors('password') ? ['autofocus' => true]:[] ) ?>
 
 
                 	<div class="form-group">

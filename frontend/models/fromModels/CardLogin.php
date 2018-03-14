@@ -49,10 +49,15 @@ class CardLogin  extends Model{
 	
 	// 登入
 	public function login(){
-		if ($this->validate()) {
-			return \Yii::$app->user->login($this->getUser(), 3600 * 24 * 30 );
+		if (!$this->validate()){
+			return false;
 		}
 		
+		$user = $this->getUser();
+		if ($user->id) {
+			return \Yii::$app->user->login($user, 3600 * 24 * 30 );
+		}
+		$this->addError('password','用户名或者密码错误');
 		return false;
 	}
 	
