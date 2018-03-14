@@ -239,8 +239,10 @@ class CardController  extends \frontend\common\FrontendController{
 	public function actionFixUser(){
 		$model= new CardFixUser();
 		\Yii::$app->response->format=\Yii::$app->response::FORMAT_JSON;
-		$model->load(Yii::$app->request->post());
-		return ActiveForm::validate($model);
+		if ($model->load(Yii::$app->request->post()) && $model->fixUser()){
+			return $this->redirect(\Yii::$app->request->referrer);
+		}
+		return $this->redirect(\Yii::$app->request->referrer);
 	}
 	
 }
