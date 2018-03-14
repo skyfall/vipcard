@@ -23,8 +23,14 @@ class CardExcelController extends FrontendController{
 		//insert the header
 		$csv->insertOne($header);
 
+		
+		$dataList = $cardModle->asArray()->select(['id','card_no','card_user_name','card_user_tel','card_money'])->all();
+		
+		foreach ($dataList as $k=>$v){
+			$dataList[$k]['card_money'] = sprintf("%.2f",($v['card_money']/100));
+		}
 		//insert all the records
-		$csv->insertAll($cardModle->asArray()->select(['id','card_no','card_user_name','card_user_tel','card_money'])->all());
+		$csv->insertAll($dataList);
 		
 		$downName = 'list-'.date('Ymd-H:i:s').'.csv';
 		header('Transfer-Encoding: chunked');
