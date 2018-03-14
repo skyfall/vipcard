@@ -44,6 +44,10 @@ class CardMoneyAdd extends Model {
 	}
 	
 	public function checkmoney(){
+		if (!is_numeric($this->money)){
+			$this->addError('money','请输入金额');
+			return false;
+		}
 		$this->money = intval($this->money*100);
 		if (empty($this->money)){
 			$this->addError('money','金额必须为2位小数');
