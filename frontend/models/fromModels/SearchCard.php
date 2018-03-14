@@ -29,9 +29,9 @@ class SearchCard extends Model {
 		return [
 				
 				
-				['card_no', 'trim','message'=>'卡号不能为空'],
-				['card_no', 'required','message'=>'卡号不能为空'],
-				['card_no', 'string', 'length' => [2, 24]],
+// 				['card_no', 'trim','message'=>'卡号不能为空'],
+// 				['card_no', 'required','message'=>'卡号不能为空'],
+// 				['card_no', 'string', 'length' => [2, 24]],
 				
 				// 				[['cardNo', 'card_no'], 'unique', 'targetAttribute' => ['user_id', 'card_no']],
 				// 				['cardNo', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
