@@ -58,7 +58,7 @@ class CardMoneyAdd extends Model {
 		return [
 				'card_no' => '卡号',
 				'card_id' => '系统编号',
-				'cardMoney' => '金额',
+				'money' => '充值金额',
 		];
 	}
 	
