@@ -31,9 +31,19 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                		'class' => 'yii\log\FileTarget',
+                		'levels' => ['error'],
+                		'logVars' => ['*'],
+                		//'categories' => ['application'],
+                		'logFile' => '@runtime/logs/'.date('Ymd').'error.log',
                 ],
+            	[
+            			'class' => 'yii\log\FileTarget',
+            			'levels' => ['warning'],
+            			'logVars' => ['*'],
+            			//'categories' => ['application'],
+            			'logFile' => '@runtime/logs/'.date('Ymd').'warning.log',
+           		],
             ],
         ],
         'errorHandler' => [
