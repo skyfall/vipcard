@@ -33,7 +33,7 @@ class CardPay extends Model {
 				
 				['money' , 'checkmoney' , 'skipOnEmpty' => false],
 // 				['money', 'integer',  'message'=>'金额必须是数字'],
-				['money', 'required',  'message'=>'金额不能为空'],
+				['money', 'required',  'message'=>'消费金额不能为空'],
 				
 				// 				[['cardNo', 'card_no'], 'unique', 'targetAttribute' => ['user_id', 'card_no']],
 				// 				['cardNo', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
@@ -42,12 +42,12 @@ class CardPay extends Model {
 	
 	public function checkmoney(){
 		if (!is_numeric($this->money)){
-			$this->addError('money','请输入金额');
+			$this->addError('money','请输入消费金额');
 			return false;
 		}
 		$this->money = intval($this->money*100*-1);
 		if (empty($this->money)){
-			$this->addError('money','金额必须为2位小数');
+			$this->addError('money','消费金额必须为2位小数');
 		}
 	}
 	

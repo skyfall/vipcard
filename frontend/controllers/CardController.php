@@ -199,7 +199,7 @@ class CardController  extends \frontend\common\FrontendController{
 		if ($model->load(Yii::$app->request->post()) && $model->addCardMoney()) {
 			return $this->redirect('/card/card-list');
 		}
-		return ['state'=>3,'message'=>'参数错误','data'=>$model->errors];
+		return ActiveForm::validate($model);
 	}
 	
 	// 异步验证数据

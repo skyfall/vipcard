@@ -35,7 +35,7 @@ class CardMoneyAdd extends Model {
 				
 				['money' , 'checkmoney' , 'skipOnEmpty' => false],
 // 				['money', 'integer',  'message'=>'金额必须是数字'],
-				['money', 'required',  'message'=>'金额不能为空'],
+				['money', 'required',  'message'=>'充值金额不能为空'],
 				
 				
 				// 				[['cardNo', 'card_no'], 'unique', 'targetAttribute' => ['user_id', 'card_no']],

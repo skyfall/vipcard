@@ -23,7 +23,7 @@ $css = '		.from {
 $this->registerCss($css);
 
 // 搜索表单
-$form = ActiveForm::begin(['id' => 'add-form','options'=>['class'=>'modal-body','style'=>'margin-left: 15px'],'method'=>"get",'action'=>\yii\helpers\Url::toRoute(['card/card-list'])]);
+$form = ActiveForm::begin(['id' => 'sreach-form','options'=>['class'=>'modal-body','style'=>'margin-left: 15px'],'method'=>"get",'action'=>\yii\helpers\Url::toRoute(['card/card-list'])]);
 echo "<div class='col-md-12'>";
 	echo "<div class='col-md-10'>";
 		echo $form->field($sreachmodel, 'card_no')->textInput(['autofocus' => true,'class'=>'form-control']);
@@ -84,13 +84,13 @@ echo GridView::widget([
 
 
 //  充值表单
-
-Modal::begin([
+$Modal1 = Modal::begin([
 		'id' => 'myModal',
 		'header' => '</button><h4 class="modal-title" id="myModalLabel">充值</h4>',
 // 		'footer' => '<button  type="submit" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" id="addFromBtn" >充值</button>',
 ]);
-$form = ActiveForm::begin(['id' => 'add-form','options'=>['class'=>'modal-body','style'=>'margin-left: 15px'],'enableAjaxValidation' => true,'validationUrl'=>\yii\helpers\Url::toRoute(['card/validation-card-add']), 'action' => \yii\helpers\Url::toRoute(['card/card-add'])]);
+$form = ActiveForm::begin(['id' => 'add-form','options'=>['class'=>'modal-body','style'=>'margin-left: 15px'],'enableAjaxValidation' => true,'validationUrl'=>\yii\helpers\Url::toRoute(['card/validation-card-add']), 'action'=>\yii\helpers\Url::toRoute(['card/card-add'])]);
+
 $js = <<<JS
     $(document).on('click', '.create-btn', function () {
             console.log(this.attributes.card_no.value)
@@ -100,50 +100,18 @@ $js = <<<JS
     });
 JS;
 $this->registerJs($js);
-// // 劫持请求
-$js = <<< JS
-$(function(){
-	$(document).on('beforeSubmit', '#add-form', function () {
-		var form = $(this);
-		//返回错误的表单信息
-		if (form.find('.has-error').length)
-		{
-			return false;
-		}
-		//表单提交
-		$.ajax({
-			url  : form.attr('action'),
-			type  : 'post',
-			data  : form.serialize(),
-			success: function (response){
-				if(response.success){
-					alert('保存成功');
-					window.location.reload();
-				}
-			},
-			error : function (){
-				alert('系统错误');
-				return false;
-			}
-		});
-			return false;
-	});
-}); 
-JS;
-// $this->registerJs($js);
 
 echo $form->field($addmodel, 'card_id')->textInput(['readonly'=>"true"]);
 echo $form->field($addmodel, 'card_no')->textInput(['readonly'=>"true"]);            	
 echo $form->field($addmodel, 'money')->textInput(['autofocus' => true]);
 echo Html::submitButton('充值', ['class' => 'btn btn-primary', 'name' => 'login-button']) ;
-ActiveForm::end();
-Modal::end();
+$form::end();
+$Modal1::end();
 
 
 
 // 消费表单
-
-Modal::begin([
+$Modal2 = Modal::begin([
 		'id' => 'myModalpay',
 		'header' => '</button><h4 class="modal-title" id="myModalLabel">消费</h4>',
 // 		'footer' => '<button type="submit" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary"  id="payFromBtn">消费</button>',
@@ -156,48 +124,14 @@ $js = <<<JS
 			$("#cardpay-card_no").val(this.attributes.card_no.value)
     });
 JS;
-
-
 $this->registerJs($js);
-
-// // 劫持请求
-$jsFrom = <<< JS
-$(function(){
-	$(document).on('beforeSubmit', '#pay-form', function () {
-		var form = $(this);
-		//返回错误的表单信息
-		if (form.find('.has-error').length)
-		{
-			return false;
-		}
-		//表单提交
-		$.ajax({
-			url  : form.attr('action'),
-			type  : 'post',
-			data  : form.serialize(),
-			success: function (response){
-				if(response.success){
-					alert('保存成功');
-					window.location.reload();
-				}
-			},
-			error : function (){
-				alert('系统错误');
-				return false;
-			}
-		});
-			return false;
-	});
-});
-JS;
-// $this->registerJs($jsFrom);
 
 echo $formPay->field($paymodel, 'card_id')->textInput(['readonly'=>"true"]);
 echo $formPay->field($paymodel, 'card_no')->textInput(['readonly'=>"true"]);
 echo $formPay->field($paymodel, 'money')->textInput(['autofocus' => true]);
 echo Html::submitButton('消费', ['class' => 'btn btn-primary', 'name' => 'login-button']) ;
-ActiveForm::end();
-Modal::end();
+$formPay::end();
+$Modal2::end();
 
 
 ?>
