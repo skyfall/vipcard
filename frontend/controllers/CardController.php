@@ -40,7 +40,7 @@ class CardController  extends \frontend\common\FrontendController{
 								[
 										'actions' => ['login'],
 										'allow' => true,
-										'roles' => ['?'],
+										'roles' => ['?','@'],
 								],
 								[
 										'actions' => ['add-card','card-list'],
